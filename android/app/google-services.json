@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1032222046525",
+    "firebase_url": "https://league2-33117.firebaseio.com",
+    "project_id": "league2-33117",
+    "storage_bucket": "league2-33117.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032222046525:android:6c7696d4bc0c6be9",
+        "android_client_info": {
+          "package_name": "com.budhirajarajesh.llda2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1032222046525-cuv4lc2s9b8hvndd49iqa69tsjag68g0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBibl9o212hgW1qfXIxVSW8f0QFnu0Q7TY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
