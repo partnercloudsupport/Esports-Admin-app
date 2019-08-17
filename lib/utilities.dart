@@ -44,8 +44,7 @@ class Utilities {
     );
   }
   static void logCrash(String message){
-    DiagnosticsNode.message(message);
-    FlutterErrorDetails errorDetails = FlutterErrorDetails(context: DiagnosticsNode.message(message));
+    FlutterErrorDetails errorDetails = FlutterErrorDetails(context: message);
     Crashlytics.instance.recordFlutterError(errorDetails);
   }
 

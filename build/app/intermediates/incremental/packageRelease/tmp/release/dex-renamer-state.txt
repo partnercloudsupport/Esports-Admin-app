@@ -1,7 +1,0 @@
-#Sat Aug 17 23:55:21 IST 2019
-base.0=/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/app/intermediates/transforms/dexMerger/release/0
-path.1=classes2.dex
-renamed.1=classes2.dex
-path.0=classes.dex
-renamed.0=classes.dex
-base.1=/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/app/intermediates/transforms/dexMerger/release/0
