@@ -1,0 +1,74 @@
+[
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/notification_icon_background.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/drawable/notification_icon_background.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_icon_dark.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_icon_dark.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_text_light_normal.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_text_light_normal.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_text_light_focused.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_text_light_focused.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_text_disabled.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_text_disabled.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_text_dark_normal.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_text_dark_normal.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_icon_disabled.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_icon_disabled.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_text_dark_focused.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_text_dark_focused.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_icon_light_focused.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_icon_light_focused.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_icon_dark_focused.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_icon_dark_focused.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_icon_dark_normal.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_icon_dark_normal.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/notification_bg.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/drawable/notification_bg.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_icon_light_normal.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_icon_light_normal.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_icon_light.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_icon_light.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_text_dark.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/notification_tile_bg.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/drawable/notification_tile_bg.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/common_google_signin_btn_text_light.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/efa7719ce238d3e7c85cd41f22820f9d/res/drawable/common_google_signin_btn_text_light.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_storage/intermediates/res/merged/release/drawable/notification_bg_low.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/drawable/notification_bg_low.xml"
+    }
+]

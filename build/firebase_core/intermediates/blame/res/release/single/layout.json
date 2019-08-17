@@ -1,0 +1,58 @@
+[
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_template_media.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/ee837c3f67cd6a946d58d64dc3e32fdd/res/layout/notification_template_media.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_media_cancel_action.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/ee837c3f67cd6a946d58d64dc3e32fdd/res/layout/notification_media_cancel_action.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_action_tombstone.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/layout/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_template_big_media_narrow.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/ee837c3f67cd6a946d58d64dc3e32fdd/res/layout/notification_template_big_media_narrow.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_template_part_time.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/layout/notification_template_part_time.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_template_big_media_narrow_custom.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/ee837c3f67cd6a946d58d64dc3e32fdd/res/layout/notification_template_big_media_narrow_custom.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_action.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/layout/notification_action.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_template_big_media.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/ee837c3f67cd6a946d58d64dc3e32fdd/res/layout/notification_template_big_media.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_template_lines_media.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/ee837c3f67cd6a946d58d64dc3e32fdd/res/layout/notification_template_lines_media.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_template_part_chronometer.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/layout/notification_template_part_chronometer.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_media_action.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/ee837c3f67cd6a946d58d64dc3e32fdd/res/layout/notification_media_action.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_template_icon_group.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/layout/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_template_media_custom.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/ee837c3f67cd6a946d58d64dc3e32fdd/res/layout/notification_template_media_custom.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_core/intermediates/res/merged/release/layout/notification_template_big_media_custom.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/ee837c3f67cd6a946d58d64dc3e32fdd/res/layout/notification_template_big_media_custom.xml"
+    }
+]

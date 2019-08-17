@@ -1,0 +1,82 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_crashlytics/intermediates/incremental/mergeReleaseResources/merged.dir/values-es-rUS/values-es-rUS.xml",
+            "map": [
+                {
+                    "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/values-es-rUS/values-es-rUS.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "310",
+                        "endColumns": "100",
+                        "endOffsets": "406"
+                    }
+                },
+                {
+                    "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/7d19b5baee4e077a1c7f34d0c8945279/res/values-es-rUS/values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "251",
+                        "endColumns": "204",
+                        "endOffsets": "455"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "105",
+                        "endColumns": "204",
+                        "endOffsets": "305"
+                    }
+                }
+            ]
+        },
+        {
+            "outputFile": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/firebase_crashlytics/intermediates/res/merged/release/values-es-rUS/values-es-rUS.xml",
+            "map": [
+                {
+                    "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/values-es-rUS/values-es-rUS.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "100",
+                        "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "310",
+                        "endColumns": "100",
+                        "endOffsets": "406"
+                    }
+                },
+                {
+                    "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/7d19b5baee4e077a1c7f34d0c8945279/res/values-es-rUS/values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "251",
+                        "endColumns": "204",
+                        "endOffsets": "455"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "105",
+                        "endColumns": "204",
+                        "endOffsets": "305"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/image_picker/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/image_picker/intermediates/res/merged/release/layout-v21/notification_action.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/image_picker/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/Users/rajeshbudhiraja/Desktop/flutter_projects/Esports-Admin-app/build/image_picker/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
+        "source": "/Users/rajeshbudhiraja/.gradle/caches/transforms-2/files-2.1/e4da398db07092125c2ef3d2a18c7edb/res/layout-v21/notification_template_custom_big.xml"
+    }
+]
