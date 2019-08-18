@@ -61,7 +61,7 @@ class IsUserLoginView extends State<IsUserLogin> with TickerProviderStateMixin {
       "leagueID":this.leagueID
     });
 
-    await Firestore.instance.collection('Leagues').document(this.leagueName).collection("Presidents").document(email.replaceAll(".", "-")).setData(<String,dynamic>{});
+    await Firestore.instance.collection('Leagues').document(this.leagueName).collection("Admins").document(email.replaceAll(".", "-")).setData(<String,dynamic>{});
     // Store subleague
 
     // Store all teams in database
@@ -87,7 +87,7 @@ class IsUserLoginView extends State<IsUserLogin> with TickerProviderStateMixin {
         startMakingEntryInDatabase(email);
         Navigator.push<Object>(context,
             MaterialPageRoute<Dashboard>(
-                builder: (BuildContext context) => Dashboard(this.leagueName)));
+                builder: (BuildContext context) => Dashboard()));
       } else {
         if (value.contains('ERROR_USER_NOT_FOUND')) {
           title = "Incorrect Username/Password";
@@ -146,7 +146,7 @@ class IsUserLoginView extends State<IsUserLogin> with TickerProviderStateMixin {
         context,
         MaterialPageRoute<Dashboard>(
 
-            builder: (BuildContext context) => Dashboard(this.leagueName)));
+            builder: (BuildContext context) => Dashboard()));
 
     return "Done";
 //    }

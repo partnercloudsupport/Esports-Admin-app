@@ -140,7 +140,7 @@ class ExistingLoginView extends State<ExistingLogin> with TickerProviderStateMix
           utilities.logEvent('dashboard');
           Navigator.push<Object>(context,
               MaterialPageRoute<Dashboard>(
-                  builder: (BuildContext context) => Dashboard(leagueName)));
+                  builder: (BuildContext context) => Dashboard()));
         } else {
           if (value.contains('ERROR_USER_NOT_FOUND')) {
             title = 'Incorrect Username/Password';
@@ -197,7 +197,7 @@ class ExistingLoginView extends State<ExistingLogin> with TickerProviderStateMix
           context,
           MaterialPageRoute<Dashboard>(
 
-              builder: (BuildContext context) => Dashboard(leagueName)));
+              builder: (BuildContext context) => Dashboard()));
 
       return 'Done';
     }
@@ -231,7 +231,7 @@ class ExistingLoginView extends State<ExistingLogin> with TickerProviderStateMix
       Navigator.push<Object>(
           context,
           MaterialPageRoute<Dashboard>(
-              builder: (BuildContext context) =>Dashboard(leagueName)));
+              builder: (BuildContext context) =>Dashboard()));
     }
   }
 

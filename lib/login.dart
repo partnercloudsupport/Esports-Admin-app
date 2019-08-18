@@ -60,7 +60,7 @@ class LoginView extends State<Login> with TickerProviderStateMixin {
         utilities.logEvent('dashboard');
         Navigator.pushReplacement<Object,Object>(context,
             MaterialPageRoute(
-                builder: (BuildContext context) => Dashboard(this.leagueName)));
+                builder: (BuildContext context) => Dashboard()));
       } else {
         if (value.contains('ERROR_USER_NOT_FOUND')) {
           title = 'Incorrect Username/Password';
@@ -129,7 +129,7 @@ class LoginView extends State<Login> with TickerProviderStateMixin {
         context,
         MaterialPageRoute(
 
-            builder: (BuildContext context) => Dashboard(this.leagueName)));
+            builder: (BuildContext context) => Dashboard()));
 
     return 'Done';
 //    }
@@ -172,7 +172,7 @@ class LoginView extends State<Login> with TickerProviderStateMixin {
       Navigator.pushReplacement<Object,Object>(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => Dashboard(this.leagueName)));
+              builder: (BuildContext context) => Dashboard()));
     }
   }
 

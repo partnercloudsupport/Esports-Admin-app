@@ -1,35 +1,38 @@
-import 'package:flutter/material.dart';
-import 'colors.dart';
-import 'utilities.dart';
-import 'databaseOperations/Backend.dart';
-import 'package:trotter/trotter.dart';
-import 'package:flutter/cupertino.dart';
 import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:admin_revamp/isUserLoggedIn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'colors.dart';
+import 'dashboard.dart';
 import 'models/ScheduleModel.dart';
+import 'utilities.dart';
+
 
 class EnterStartDate extends StatefulWidget {
-  final String leagueName;
+  const EnterStartDate(this.leagueID,this.subleagueName,this.weeksSchedule,this.teamNames);
+
   final String leagueID;
   final String subleagueName;
   final List<String> teamNames;
   final Map<int,List<List<String>>> weeksSchedule;
-  EnterStartDate(this.leagueName,this.leagueID,this.subleagueName,this.weeksSchedule,this.teamNames);
   @override
   State<StatefulWidget> createState() {
-    return EnterStartDateState(this.leagueName,this.leagueID,this.subleagueName,weeksSchedule,this.teamNames);
+    return EnterStartDateState(leagueID,subleagueName,weeksSchedule,teamNames);
   }
 }
 
 class EnterStartDateState extends State<EnterStartDate> {
-  final String leagueName;
+  EnterStartDateState(this.leagueID,this.subleagueName,this.weeksSchedule,this.teamNames);
   final String leagueID;
   final String subleagueName;
   final List<String> teamNames;
-
+  String leagueName = "";
   bool showLoader = false;
   DateTime datePicked;
   Map<String,List<Map<String,String>>> finalSchedule = {};
@@ -38,9 +41,15 @@ class EnterStartDateState extends State<EnterStartDate> {
   List<List<String >> combinations = [];
   var controller = TextEditingController(text: "");
   final GlobalKey<FormState> _controllerKey = GlobalKey<FormState>();
-  EnterStartDateState(this.leagueName,this.leagueID,this.subleagueName,this.weeksSchedule,this.teamNames);
+
+  Future<void> loadLeagueName() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    leagueName = prefs.getString(Utilities.LEAGUE_NAME);
+  }
+
   @override
   void initState() {
+    loadLeagueName();
     super.initState();
   }
 
@@ -50,7 +59,7 @@ class EnterStartDateState extends State<EnterStartDate> {
       datePicked = await showDatePicker(context: context, initialDate: DateTime.now().add(Duration(seconds: 5)), firstDate: DateTime.now(), lastDate: DateTime.now().add(Duration(days: 366)));
       if(datePicked != null){
         setState(() {
-          var formatter = new DateFormat('dd-MMM-yyyy');
+          final DateFormat formatter = DateFormat('dd-MMM-yyyy');
           controller.text = formatter.format(datePicked).toString();
         });
       }
@@ -60,7 +69,7 @@ class EnterStartDateState extends State<EnterStartDate> {
         return CupertinoDatePicker(onDateTimeChanged: (datePicked){
           setState(() {
             this.datePicked = datePicked;
-            var formatter = new DateFormat('dd-MMM-yyyy');
+            final DateFormat formatter = DateFormat('dd-MMM-yyyy');
             controller.text = formatter.format(datePicked).toString();
           });
         },initialDateTime: DateTime.now(),
@@ -73,7 +82,7 @@ class EnterStartDateState extends State<EnterStartDate> {
     setState(() {
       showLoader = true;
     });
-    int numberOfWeeks = this.weeksSchedule.keys.toList().length;
+    final int numberOfWeeks = weeksSchedule.keys.toList().length;
     List<String> tempDatesList = [];
     var formatter = new DateFormat('dd-MMM-yyyy');
     String startingDate = formatter.format(this.datePicked);
@@ -98,6 +107,26 @@ class EnterStartDateState extends State<EnterStartDate> {
       finalSchedule[tempDate] = scheduleObjects;
 //      tempSchedule.add({tempDate:scheduleObjects});
     }
+  }
+
+  Future<void> startMakingEntryInDatabase(String email) async {
+    await Firestore.instance.collection('Leagues').document(this.leagueName).setData( <String,dynamic>{
+      "leagueID":this.leagueID
+    });
+
+    await Firestore.instance.collection('Leagues').document(this.leagueName).collection("Admins").document(email.replaceAll(".", "-")).setData(<String,dynamic>{});
+    // Store subleague
+
+    // Store all teams in database
+    for(var team in this.teamNames){
+      await Firestore.instance.collection('Leagues').document(this.leagueName).collection("Subleagues").document(this.subleagueName).collection("Teams").document(team).setData(<String,dynamic>{
+      });
+    }
+    // Store schedules.
+    for (var each in this.finalSchedule.entries){
+      await Firestore.instance.collection('Leagues').document(this.leagueName).collection('Schedule').document(each.key).setData(<String,dynamic>{"schedule":each.value});
+    }
+
   }
 
   List<ScheduleModel> createScheduleMaps(List<List<String>> weeksDetails){
@@ -189,7 +218,7 @@ class EnterStartDateState extends State<EnterStartDate> {
                 Themes.theme1['FirstGradientColor'],
                 Themes.theme1['SecondGradientColor']
               ]),
-              onPressed: () {
+              onPressed: () async {
                 print(controller.text);
                 if(this._controllerKey.currentState.validate()){
                   print(this.weeksSchedule);
@@ -204,7 +233,23 @@ class EnterStartDateState extends State<EnterStartDate> {
                       }));
                     }
                     else{
-                      print(user);
+                      print(user.email);
+                      startMakingEntryInDatabase(user.email);
+                      Firestore.instance.collection('Leagues').document(leagueName).setData(
+                          <String, dynamic>{
+                            'President': {
+                              'id': user.email.replaceAll('.', '-'),
+                              'name': 'Anonymous',
+                              'picture': ''
+                            }
+                          });
+                      Navigator.push<Object>(
+
+                          context,
+                          MaterialPageRoute<Dashboard>(
+
+                              builder: (BuildContext context) => Dashboard()));
+
                     }
                   }
                   );

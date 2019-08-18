@@ -17,10 +17,6 @@ import 'editLeagueNews.dart';
 import 'utilities.dart';
 
 class Dashboard extends StatefulWidget {
-  final String leagueName;
-
-  Dashboard(this.leagueName);
-
   @override
   State<StatefulWidget> createState() {
     return DashboardState();
@@ -92,7 +88,7 @@ class DashboardState extends State<Dashboard>
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -120,7 +116,7 @@ class DashboardState extends State<Dashboard>
                     onPressed: () {
                       Navigator.push<Object>(context,
                           MaterialPageRoute<AdminDashboard>(builder: (BuildContext context) {
-                        return AdminDashboard(widget.leagueName);
+                        return AdminDashboard(leagueName);
                       }));
                     },
                     child: Container(

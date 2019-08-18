@@ -49,7 +49,7 @@ class EnterTeamsCountState extends State<EnterTeamsCount> {
       this.weekCount += 1;
     }
     Navigator.push<Object>(context, MaterialPageRoute(builder: (BuildContext context){
-      return EnterStartDate(leagueName, leagueID, subleagueName,this.weeksSchedule,this.teamNames);
+      return EnterStartDate(leagueID, subleagueName,this.weeksSchedule,this.teamNames);
     }));
     print(this.weeksSchedule);
   }

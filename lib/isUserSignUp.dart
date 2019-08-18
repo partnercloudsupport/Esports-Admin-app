@@ -48,7 +48,7 @@ class IsUserSignUpPageState extends State<IsUserSignUpPage> with TickerProviderS
       "leagueID":this.leagueID
     });
 
-    await Firestore.instance.collection('Leagues').document(this.leagueName).collection("Presidents").document(email.replaceAll(".", "-")).setData(<String,dynamic>{});
+    await Firestore.instance.collection('Leagues').document(this.leagueName).collection("Admins").document(email.replaceAll(".", "-")).setData(<String,dynamic>{});
     // Store subleague
 
     // Store all teams in database
@@ -74,7 +74,7 @@ class IsUserSignUpPageState extends State<IsUserSignUpPage> with TickerProviderS
             MaterialPageRoute(
                 builder:
                     (BuildContext context) =>
-                    Dashboard(leagueName)));
+                    Dashboard()));
       } else {
         if (value.contains(
             "ERROR_EMAIL_ALREADY_IN_USE")) {

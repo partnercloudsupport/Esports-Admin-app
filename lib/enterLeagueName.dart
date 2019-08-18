@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
-import 'colors.dart';
-import 'utilities.dart';
-import 'enterSubleagueName.dart';
-import 'databaseOperations/Backend.dart';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'colors.dart';
+import 'databaseOperations/Backend.dart';
+import 'enterSubleagueName.dart';
+import 'utilities.dart';
+
 
 class EnterLeagueName extends StatefulWidget {
   @override
@@ -101,6 +103,8 @@ class EnterLeagueNameState extends State<EnterLeagueName> {
                       });
                 }
                 } else{
+                  SharedPreferences prefs = await SharedPreferences.getInstance();
+                  prefs.setString(Utilities.LEAGUE_NAME, controller.text);
                   Navigator.push<Object>(context, MaterialPageRoute<EnterSubleagueName>(builder: (BuildContext context){
                     return EnterSubleagueName(this.controller.text);
                   }));
