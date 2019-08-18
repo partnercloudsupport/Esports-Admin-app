@@ -11,7 +11,7 @@ import 'checkLeague.dart';
 class Utilities {
   static const String LEAGUE_ID = "leagueID";
   static const String LEAGUE_NAME = "leagueName";
-
+  static const String ROLE_NAME = "roleName";
 
   static String appID = "ca-app-pub-4647236573650320~3783616629";
   static String bannerID = "ca-app-pub-4647236573650320/8765793643";
