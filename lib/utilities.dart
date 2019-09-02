@@ -6,15 +6,14 @@ import 'colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'dart:async';
-import 'checkLeague.dart';
 
 class Utilities {
-  static const String LEAGUE_ID = "leagueID";
-  static const String LEAGUE_NAME = "leagueName";
-  static const String ROLE_NAME = "roleName";
+  static const String LEAGUE_ID = 'leagueID';
+  static const String LEAGUE_NAME = 'leagueName';
+  static const String ROLE_NAME = 'roleName';
 
-  static String appID = "ca-app-pub-4647236573650320~3783616629";
-  static String bannerID = "ca-app-pub-4647236573650320/8765793643";
+  static String appID = 'ca-app-pub-4647236573650320~3783616629';
+  static String bannerID = 'ca-app-pub-4647236573650320/8765793643';
   static BuildContext context;
   final FirebaseAnalytics analytics = FirebaseAnalytics();
   static double cornerRadius = 40;
@@ -25,17 +24,17 @@ class Utilities {
   }
 //  static bool isEsports = false;
 //  static Ads showBannerAds() {
-//    return Ads(Utilities.appID,bannerUnitId: Utilities.bannerID,keywords: ["Baseball","Sports","League","Jersey"]);
+//    return Ads(Utilities.appID,bannerUnitId: Utilities.bannerID,keywords: ['Baseball','Sports','League','Jersey']);
 //  }
   static AlertDialog alert(String title, String content, BuildContext context) {
     return AlertDialog(
-      title: Text(title,style: TextStyle(color: Themes.theme1["TextColor"]),),
+      title: Text(title,style: TextStyle(color: Themes.theme1['TextColor']),),
       backgroundColor:
-      Themes.theme1["CardColor"],
-      content: Text(content,style: TextStyle(color: Themes.theme1["TextColor"]),),
+      Themes.theme1['CardColor'],
+      content: Text(content,style: TextStyle(color: Themes.theme1['TextColor']),),
       actions: <Widget>[
         FlatButton(
-          child: Text('OK',style: TextStyle(color: Themes.theme1["TextColor"])),
+          child: Text('OK',style: TextStyle(color: Themes.theme1['TextColor'])),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -49,8 +48,8 @@ class Utilities {
   }
 
   static CupertinoAlertDialog iosAlert(String title, String content, BuildContext context){
-    return CupertinoAlertDialog(title: Text(title),content: Text(content),actions: <Widget>[CupertinoDialogAction(child: Text("OK"),isDefaultAction: true,onPressed: (){
-      Navigator.pop(context,"Ok");
+    return CupertinoAlertDialog(title: Text(title),content: Text(content),actions: <Widget>[CupertinoDialogAction(child: const Text('OK'),isDefaultAction: true,onPressed: (){
+      Navigator.pop(context,'Ok');
     },)],);
   }
 //  static Widget home = Container(
@@ -58,7 +57,7 @@ class Utilities {
 //      child: Row(
 //        children: <Widget>[
 //          Text(
-//            "Home",
+//            'Home',
 //            textAlign: TextAlign.start,
 //            style: TextStyle(fontSize: 25, color: Colors.brown),
 //          ),
@@ -76,7 +75,7 @@ class Utilities {
       child: Row(
         children: <Widget>[
           Text(
-            "Logout",
+            'Logout',
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 25, color: Colors.brown),
           ),
@@ -96,9 +95,9 @@ class Utilities {
 }
 
 class Menu extends StatefulWidget {
-  static String name = "";
-  static String lastName = "";
-  static String emailID = "";
+  static String name = '';
+  static String lastName = '';
+  static String emailID = '';
 
   @override
   State<StatefulWidget> createState() {
@@ -141,7 +140,7 @@ class MenuState extends State<Menu> {
       List<Widget> menuItems = [
         UserAccountsDrawerHeader(
           accountName: Text(
-            Menu.name + " " + Menu.lastName,
+            Menu.name + ' ' + Menu.lastName,
             style: TextStyle(fontSize: 20),
           ),
           accountEmail: Text(
@@ -187,7 +186,7 @@ class RaisedGradientButton extends StatelessWidget {
     @required this.child,
     this.gradient,
     this.width = double.infinity,
-    this.height = 50.0,
+    this.height = 30.0,
     this.onPressed,
   }) : super(key: key);
 
@@ -197,13 +196,16 @@ class RaisedGradientButton extends StatelessWidget {
 
       width: width,
       height: 50.0,
-      decoration: BoxDecoration(gradient: gradient, boxShadow: [
-        BoxShadow(
-          color: Colors.grey[500],
-          offset: Offset(0.0, 1.5),
-          blurRadius: 1.5,
-        ),
-      ]),
+      decoration: BoxDecoration(gradient: gradient,
+//          boxShadow: [
+//        BoxShadow(
+//          color: Colors.grey[500],
+//          offset: const Offset(0.0, 1.5),
+//          blurRadius: 1.5,
+//        ),
+//      ]
+      borderRadius: BorderRadius.circular(4.0)
+      ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -217,8 +219,8 @@ class RaisedGradientButton extends StatelessWidget {
 }
 
 class CustomTextStyles{
-  static var boldLargeText = TextStyle(
-      color: Themes.theme1["TextColor"],fontFamily: 'Poppins',fontWeight: FontWeight.bold, fontSize: 18);
+  static TextStyle boldLargeText = TextStyle(
+      color: Themes.theme1['TextColor'],fontFamily: 'Poppins',fontWeight: FontWeight.bold, fontSize: 18);
 
-  static var regularText = TextStyle(color: Themes.theme1["TextColor"],fontFamily: 'Poppins',fontWeight: FontWeight.normal, fontSize: 18);
+  static var regularText = TextStyle(color: Themes.theme1['TextColor'],fontFamily: 'Poppins',fontWeight: FontWeight.normal, fontSize: 18);
 }

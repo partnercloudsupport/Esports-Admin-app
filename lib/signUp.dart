@@ -1,214 +1,382 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-import 'databaseOperations/Backend.dart';
-import 'utilities.dart';
-import 'colors.dart';
-import 'utilities.dart';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'colors.dart';
+import 'emailVerification.dart';
 
 class SignUpPage extends StatefulWidget {
-  String leagueID;
-  SignUpPage(this.leagueID);
-  String leagueName ;
-
-  Future<void> getLeagueName() async{
-    this.leagueName = await Backend.getLeagueNameFromLeagueID(leagueID);
-  }
-
   @override
   State<StatefulWidget> createState() {
-    getLeagueName();
-    return SignUpPageState(leagueName,this.leagueID);
+    return SignUpPageState();
   }
 }
 
-class SignUpPageState extends State<SignUpPage> with TickerProviderStateMixin {
-  String leagueName;
-  String leagueID;
-  //Signup method
-
+class SignUpPageState extends State<SignUpPage> {
+  bool lock = true;
+  bool showText = true;
+  bool showLoader = false;
   var formKey = GlobalKey<FormState>();
-  Map<String, String> signupData = {"email": "", "password": ""};
-  SignUpPageState(this.leagueName,this.leagueID);
-  final utilites = Utilities();
-  AnimationController controller;
-  Animation<double> animation;
+  TextEditingController emailController = TextEditingController(text: '');
+  TextEditingController password = TextEditingController(text: '');
+  TextEditingController rePassword = TextEditingController(text: '');
 
-  initState(){
-    getLeagueName();
-    controller = AnimationController(vsync: this,duration: Duration(milliseconds: 600));
-    animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
-    controller.forward();
+  Icon lockIcon() {
+    if (lock) {
+      return Icon(
+        Icons.lock,
+        color: Colors.white,
+      );
+    } else {
+      return Icon(
+        Icons.lock_open,
+        color: Colors.white,
+      );
+    }
   }
 
-  Future<void> getLeagueName() async{
-    this.leagueName = await Backend.getLeagueNameFromLeagueID(leagueID);
-  }
-
-  Future<void> signup(String email, String password,String league) {
-    Backend.signUp(email, password,league, false).then((value){
-      String title = "";
-      String description = "";
-      if (value.contains("providerData")) {
-        utilites.logEvent("dashboard_via_sign_up");
-        Navigator.pushReplacement<Object,Object>(
-            context,
-            MaterialPageRoute(
-                builder:
-                    (BuildContext context) =>
-                    Text("Dashboard")));
+  void toggle() {
+    setState(() {
+      if (lock) {
+        lock = false;
+        showText = false;
       } else {
-        if (value.contains(
-            "ERROR_EMAIL_ALREADY_IN_USE")) {
-          title = "User Exists";
-          description =
-          "Email Id already in use. Kindly sign in.";
-        } else {
-          title = "Some error occurred";
-        }
-        if(Platform.isIOS){
-          showDialog<CupertinoAlertDialog>(
-              context: context,
-              builder: (BuildContext context) {
-                return Utilities.iosAlert(
-                    title, description, context);
-              });
-        }
-        else{
-          showDialog<AlertDialog>(
-              context: context,
-              builder: (BuildContext context) {
-                return Utilities.alert(
-                    title, description, context);
-              });
-        }
-
+        lock = true;
+        showText = true;
       }
     });
   }
 
+  Color buttonColor() {
+    if (emailController.text.length >= 5 && password.text.length >= 8) {
+      return Colors.orange;
+    }
+    return Colors.orange[200];
+  }
+
+  Future<void> signUpAction() async {
+    if (emailController.text.length >= 5 && password.text.length >= 8) {
+      try{
+        final List<InternetAddress> result = await InternetAddress.lookup('google.com');
+        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+          setState(() {
+            showLoader = true;
+          });
+          final FirebaseAuth instance = FirebaseAuth.instance;
+          final FirebaseUser user = await instance.createUserWithEmailAndPassword(
+              email: emailController.text, password: password.text);
+          await user.sendEmailVerification();
+          setState(() {
+            showLoader = false;
+          });
+          Navigator.push<Object>(context, MaterialPageRoute<EmailVerification>(builder: (BuildContext context){
+            return EmailVerification();
+          }));
+
+        }
+      } on SocketException catch (_) {
+        setState(() {
+          showLoader = false;
+        });
+        if (Platform.isIOS) {
+          showCupertinoDialog<CupertinoAlertDialog>(
+              context: context,
+              builder: (BuildContext context) {
+                return CupertinoAlertDialog(
+                  title: const Text('Some error occurred'),
+                  content: const Text('Verification email could not be sent.'),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                      child: const Text('OK'),
+                      isDefaultAction: true,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                );
+              });
+        }
+        else {
+          showDialog<AlertDialog>(context: context, builder: (BuildContext context){
+            return AlertDialog(
+              title: const Text('Some error occurred'),
+              content: const Text('Verification email could not be sent.'),
+              actions: <Widget>[
+                FlatButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            );
+          });
+        }
+      } catch (e) {
+        print(e);
+        setState(() {
+          showLoader = false;
+        });
+        if (Platform.isIOS) {
+          showCupertinoDialog<CupertinoAlertDialog>(
+              context: context,
+              builder: (BuildContext context) {
+                return CupertinoAlertDialog(
+                  title: const Text('Some error occurred'),
+                  content: const Text('Sign in failed.'),
+                  actions: <Widget>[
+                    CupertinoDialogAction(
+                      child: const Text('OK'),
+                      isDefaultAction: true,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                );
+              });
+        }
+        else {
+          showDialog<AlertDialog>(context: context, builder: (BuildContext context){
+            return AlertDialog(
+              title: const Text('Some error occurred'),
+              content: const Text('Sign in failed.'),
+              actions: <Widget>[
+                FlatButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            );
+          });
+        }
+      }
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    return WillPopScope(child: Scaffold(
-        resizeToAvoidBottomPadding: false,
-
-        body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-
-          child: Scaffold(backgroundColor: Themes.theme1["CardColor"],
-            resizeToAvoidBottomPadding: false,
-
-
-            body:FadeTransition(opacity: animation,child: Column(children: <Widget>[Container(margin: EdgeInsets.only(top: 40),child: Text("Sign Up",style: TextStyle(fontFamily: 'Poppins',fontSize: 16,fontStyle: FontStyle.normal,fontWeight: FontWeight.bold,color: Colors.white),),),
-
-
-              Container(
-                child: Container(
-                  height: 400,
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 40),
-                  child: Card(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Utilities.cornerRadius),side:BorderSide(color: Themes.theme1["HighLightColor"],width: 2) ),
-
-                    color: Themes.theme1["CardColor"],
-                    margin: EdgeInsets.only(top: 20,left: 20,right: 20),
-                    child:
-
-
-                    Form(
-                      key: formKey,
-                      child: ListView(
-                        children: <Widget>[
-                          SizedBox(height: 40,)
-                          ,                  Container(
-                            height: 60,
-                            child: TextFormField(style: CustomTextStyles.regularText,
-                                onSaved: (value) {
-                                  signupData["email"] = value.toLowerCase();
-                                },
-                                decoration: InputDecoration(
-                                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),filled: true, fillColor: Themes.theme1["TextFieldFillColor"],
-                                    labelText: 'Email ',
-                                    labelStyle: TextStyle(
-                                        color: Themes.theme1["TextPlaceholderColor"],fontFamily: 'Poppins',fontWeight: FontWeight.bold, fontSize: 14
-                                    ),
-                                    errorStyle: TextStyle(fontSize: 14)),
-                                autovalidate: false,
-                                validator: (String emailID) {
-                                  if (emailID.isEmpty) {
-                                    return "Please enter your email id.";
-                                  } else if (RegExp(
-                                      r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                      .hasMatch(emailID) ==
-                                      false) {
-                                    return "Entered email is not valid";
-                                  }
-                                }
-                            ),
-                            margin: EdgeInsets.only(left: 40, right: 40),
-                          ),
-                          Container(
-                            height: 60,
-                            child: TextFormField(style: CustomTextStyles.regularText,
-                              onSaved: (value) {
-                                signupData["password"] = value;
-                              },
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10))),filled: true, fillColor: Themes.theme1["TextFieldFillColor"],
-                                  labelText: 'Password',
-                                  labelStyle: TextStyle(
-                                      color: Themes.theme1["TextPlaceholderColor"],fontFamily: 'Poppins',fontWeight: FontWeight.bold, fontSize: 14
-                                  ),
-                                  errorStyle: TextStyle(fontSize: 14)),
-                              autovalidate: false,
-                              validator: (value) {
-                                if (value.isEmpty) {
-                                  return 'Please enter password';
-                                } else if (value.length <= 8) {
-                                  return 'Password should be atleast 8 characters long';
-                                }
-                              },
-                            ),
-                            margin: EdgeInsets.only(top: 20,left: 40, right: 40),
-                          ),
-                          Container(
-                            height: 50,
-                            margin: EdgeInsets.only(top:20,left: 40,right: 40),
-                            child: RaisedGradientButton(
-                                child: Text(
-                                  'Sign Up',
-                                  style: CustomTextStyles.boldLargeText,
-                                ), gradient: LinearGradient(colors: [
-                              Themes.theme1["FirstGradientColor"],
-                              Themes.theme1["SecondGradientColor"]
-                            ]),
-                                onPressed: () {
-                                  if (formKey.currentState.validate()) {
-                                    formKey.currentState.save();
-                                    this.signup(this.signupData["email"],
-                                        this.signupData["password"],this.leagueName);
-
-
-                                  }
-                                }
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 15),child: FlatButton(onPressed: (){
-                            Navigator.pop(context);
-                          }, child: Text('Back to login',
-                            style: TextStyle(fontFamily: 'Poppins',fontWeight: FontWeight.bold, fontSize: 14,color: Themes.theme1["TextPlaceholderColor"])
-                            ,)),)
-                        ],
+    return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      appBar: AppBar(
+        title: const Text('Sign up'),
+        backgroundColor: Colors.orange,
+      ),
+      body: GestureDetector(
+        child: ModalProgressHUD(
+            inAsyncCall: showLoader,
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              child: Form(
+                key: formKey,
+                child: ListView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 16, top: 16),
+                      child: Text(
+                        'Sign up',
+                        style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Themes.theme1['TextColor']),
                       ),
-                    ),),),
-              )],),),),
-        )),onWillPop: (){
-      return new Future(() => true);
-    },);
+                    ),
+                    const SizedBox(
+                      height: 60,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 16, right: 16),
+                      child: Theme(
+                        child: TextFormField(
+                          controller: emailController,
+                          autocorrect: false,
+                          onSaved: (String email) {},
+                          validator: (String value) {
+                            if (RegExp(r'^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+')
+                                    .hasMatch(value) ||
+                                value.length <= 1) {
+                              return null;
+                            }
+                            return '';
+                          },
+                          autovalidate: true,
+                          decoration: InputDecoration(
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.cyan),
+                              ),
+                              errorBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                              ),
+                              hintStyle: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Themes.theme1['SubTextColor']),
+                              hintText: 'Email address'),
+                          style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Themes.theme1['TextColor']),
+                        ),
+                        data: ThemeData(
+                            primaryColor: Colors.orange,
+                            accentColor: Colors.cyan),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 16, right: 16),
+                      child: Theme(
+                        child: TextFormField(
+                          controller: password,
+                          autocorrect: false,
+                          onSaved: (String password) {},
+                          validator: (String value) {
+                            if ((value.length >= 8 || value.length <= 1) && password.text == rePassword.text) {
+                              return null;
+                            }
+                            return '';
+                          },
+                          autovalidate: true,
+                          obscureText: showText,
+                          decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                  icon: lockIcon(),
+                                  onPressed: () {
+                                    toggle();
+                                  }),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.cyan),
+                              ),
+                              hintStyle: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Themes.theme1['SubTextColor']),
+                              hintText: 'Password'),
+                          style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Themes.theme1['TextColor']),
+                        ),
+                        data: ThemeData(primaryColor: Colors.orange),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(left: 16, right: 16),
+                      child: Theme(
+                        child: TextFormField(
+                          controller: rePassword,
+                          autocorrect: false,
+                          onSaved: (String password) {},
+                          validator: (String value) {
+                            if ((value.length >= 8 || value.length <= 1) && password.text == rePassword.text) {
+                              return null;
+                            }
+                            return '';
+                          },
+                          autovalidate: true,
+                          obscureText: showText,
+                          decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                  icon: lockIcon(),
+                                  onPressed: () {
+                                    toggle();
+                                  }),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.cyan),
+                              ),
+                              hintStyle: TextStyle(
+                                  fontFamily: 'Poppins',
+                                  color: Themes.theme1['SubTextColor']),
+                              hintText: 'Retype Password'),
+                          style: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Themes.theme1['TextColor']),
+                        ),
+                        data: ThemeData(primaryColor: Colors.orange),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: buttonColor()),
+                      margin: const EdgeInsets.only(left: 16, right: 16),
+                      height: 40,
+                      child: FlatButton(
+                          onPressed: () {
+                            try{
+                              signUpAction();
+                            }
+                            catch (e) {
+                              print(e);
+                              if (Platform.isIOS) {
+                                showCupertinoDialog<CupertinoAlertDialog>(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return CupertinoAlertDialog(
+                                        title: const Text('Some error occurred'),
+                                        actions: <Widget>[
+                                          CupertinoDialogAction(
+                                            child: const Text('OK'),
+                                            isDefaultAction: true,
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          )
+                                        ],
+                                      );
+                                    });
+                              }
+                              else {
+                                showDialog<AlertDialog>(context: context, builder: (BuildContext context){
+                                  return AlertDialog(
+                                    title: const Text('Some error occurred'),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: const Text('OK'),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                      )
+                                    ],
+                                  );
+                                });
+                              }
+                            }
+                          },
+                          child: const Text(
+                            'Sign up',
+                            style: TextStyle(color: Colors.black),
+                          )),
+                    )
+                  ],
+                ),
+              ),
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                Themes.theme1['CardColor'],
+                Themes.theme1['PrimaryColor']
+              ], stops: const <double>[
+                1,
+                0.0
+              ])),
+            )),
+        onTap: () {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+      ),
+    );
   }
 }
-
