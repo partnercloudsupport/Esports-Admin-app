@@ -295,7 +295,7 @@ class Backend {
     if (leagueName == null || leagueName.length < 3) {
       return 'League name should be atleast 3 characters long';
     }
-    List<String> words = leagueName.split(' ');
+    final List<String> words = leagueName.split(' ');
     String leagueID = '';
     for (int i = 0; i < words.length; i++) {
       words[i] = words[i][0].toUpperCase() + words[i].substring(1);
