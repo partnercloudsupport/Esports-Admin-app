@@ -6,13 +6,13 @@ import 'addSubleague.dart';
 
 class SelectSubleague extends StatefulWidget {
   final String leagueName;
-  List<dynamic> subleagues = <String>[""];
+  List<dynamic> subleagues = <String>[''];
   Stream<QuerySnapshot> documents;
   dynamic subleague;
 
-  String coachName = "Rajesh Budhiraja";
-  String teamImage = "";
-  String playersCount = "10";
+  String coachName = 'Rajesh Budhiraja';
+  String teamImage = '';
+  String playersCount = '10';
 
   List<DocumentSnapshot> teams = [];
   SelectSubleague(this.leagueName);
@@ -30,11 +30,11 @@ class SelectSubleagueState extends State<SelectSubleague> {
 
   Future<void> teamCards(String subleagueName) async {
     QuerySnapshot documents = await Firestore.instance
-        .collection("Leagues")
+        .collection('Leagues')
         .document(this.widget.leagueName)
-        .collection("Subleagues")
+        .collection('Subleagues')
         .document(subleagueName)
-        .collection("Teams")
+        .collection('Teams')
         .getDocuments();
     setState(() {
       widget.teams = documents.documents ?? [];
@@ -45,47 +45,35 @@ class SelectSubleagueState extends State<SelectSubleague> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomPadding: false,
-        backgroundColor: Themes.theme1["CardColor"],
+        appBar: AppBar(
+          title: const Text('League Update'),
+          backgroundColor: Colors.orange,
+        ),
+        backgroundColor: Themes.theme1['CardColor'],
         body: Container(
             child: ListView(
           children: <Widget>[
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Row(
-              children: <Widget>[
-                Spacer(),
-                Text(
-                  'League Update',
-                  style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                      color: Colors.white),
-                ),
-                Spacer()
-              ],
-            ),
-            SizedBox(
-              height: 40,
-            ),
+
             Container(
               height: 40,
               child: Text(
                 'Select a subleague',
                 style: TextStyle(
                     fontFamily: 'Poppins',
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.normal,
                     fontSize: 20,
                     color: Colors.white),
               ),
-              margin: EdgeInsets.only(left: 20),
+              margin: const EdgeInsets.only(left: 20),
             ),
             StreamBuilder(
               stream: Firestore.instance
-                  .collection("Leagues")
+                  .collection('Leagues')
                   .document(this.widget.leagueName)
-                  .collection("Subleagues")
+                  .collection('Subleagues')
                   .snapshots(),
               builder: (BuildContext context, AsyncSnapshot snap) {
                 if (snap.connectionState == ConnectionState.done ||
@@ -96,13 +84,13 @@ class SelectSubleagueState extends State<SelectSubleague> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           gradient: LinearGradient(colors: [
-                            Themes.theme1["FirstGradientColor"],
-                            Themes.theme1["SecondGradientColor"]
+                            Themes.theme1['FirstGradientColor'],
+                            Themes.theme1['SecondGradientColor']
                           ])),
-                      margin: EdgeInsets.only(left: 20, right: 20),
+                      margin: const EdgeInsets.only(left: 20, right: 20),
                       child: Container(
                         child: Text(
-                          "No Subleagues",
+                          'No Subleagues',
                           style: TextStyle(
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.bold,
@@ -121,23 +109,23 @@ class SelectSubleagueState extends State<SelectSubleague> {
                   return Container(
                     height: 60,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(4),
                         gradient: LinearGradient(colors: [
-                          Themes.theme1["FirstGradientColor"],
-                          Themes.theme1["SecondGradientColor"]
+                          Colors.orange,
+                          Colors.yellow
                         ])),
-                    margin: EdgeInsets.only(left: 20, right: 20),
+                    margin: const EdgeInsets.only(left: 20, right: 20),
                     child: Theme(
                         data: ThemeData.dark(),
                         child: DropdownButtonHideUnderline(
                             child: DropdownButton<dynamic>(
                                 hint: Container(
-                                    margin: EdgeInsets.only(left: 20),
+                                    margin: const EdgeInsets.only(left: 20),
                                     child: Text(
-                                      "Please select a subleague",
+                                      'Please select a subleague',
                                       style: TextStyle(
                                           fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.bold,
+                                          fontWeight: FontWeight.normal,
                                           fontSize: 16,
                                           color: Colors.white),
                                     )),
@@ -148,7 +136,7 @@ class SelectSubleagueState extends State<SelectSubleague> {
                                     size: 30,
                                     color: Colors.white,
                                   ),
-                                  margin: EdgeInsets.only(top: 10, right: 20),
+                                  margin: const EdgeInsets.only(top: 10, right: 20),
                                 ),
                                 value: widget.subleague,
                                 items: widget.subleagues
@@ -163,7 +151,7 @@ class SelectSubleagueState extends State<SelectSubleague> {
                                                   fontSize: 16,
                                                   color: Colors.white),
                                             ),
-                                            margin: EdgeInsets.only(left: 10),
+                                            margin: const EdgeInsets.only(left: 10),
                                           ),
                                         ))
                                     .toList(),
@@ -176,156 +164,149 @@ class SelectSubleagueState extends State<SelectSubleague> {
                   );
                 } else {
                   return Center(
-                    child: CircularProgressIndicator(),
+                    child: const CircularProgressIndicator(),
                   );
                 }
               },
             ),
             Container(
               constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height*0.5),
-              child: Card(
-                color: Themes.theme1["CardColor"],
-                child: ListView.builder(
-                    itemCount: widget.teams.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 5),
-                        height: 170,
-                        decoration: BoxDecoration(
-                            color: Colors.blue,
-                            gradient: LinearGradient(
-                                colors: [Colors.blue, Colors.deepPurple]),
-                            borderRadius: BorderRadius.circular(8)),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
+              child: ListView.builder(
+                  itemCount: widget.teams.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 5),
+                      height: 170,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          gradient: LinearGradient(
+                              colors: [Colors.blue, Colors.deepPurple]),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
                               width: 100,
-                                margin: EdgeInsets.only(top: 20, left: 10),
-                                child: ClipRRect(
-                                  child: Container(child: FadeInImage.assetNetwork(
-                                      placeholder: "images/coach.png",
-                                      image: widget.teams[index]
-                                              .data["teamImage"] ??
-                                          ""),color: Colors.deepPurple,),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(100)),
-                                )),
-                            Container(
-                                child:
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                  width: 200,
-                                  child: Text(
-                                    widget.teams[index].documentID,
-                                    style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16,
-                                        color: Colors.white),
-                                    textAlign: TextAlign.center,
+                              margin: const EdgeInsets.only(top: 20, left: 10),
+                              child: ClipRRect(
+                                child: Container(child: FadeInImage.assetNetwork(
+                                    placeholder: 'images/coach.png',
+                                    image: widget.teams[index]
+                                        .data['teamImage'] ??
+                                        ''),color: Colors.deepPurple,),
+                                borderRadius:
+                                const BorderRadius.all(Radius.circular(100)),
+                              )),
+                          Container(
+                              child:
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  const SizedBox(
+                                    height: 10,
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.deepPurple,
-                                      shape: BoxShape.rectangle,
-                                      border: Border.all(
-                                          color: Colors.white, width: 2),
-                                      borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(10),
-                                          bottomRight: Radius.circular(10),
-                                          topRight: Radius.circular(10),
-                                          topLeft: Radius.circular(10))),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                  width: 200,
-                                  child:
-                                Text(
-                                    widget.teams[index].data["coachName"] ??
-                                        "Coach",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Colors.white)),),
-                                Row(
-                                  children: <Widget>[
-                                    SizedBox(
-                                      width: 10,
+                                  Container(
+                                    width: 200,
+                                    child: Text(
+                                      widget.teams[index].documentID,
+                                      style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Colors.white),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    Container(
-                                      width: 200,
-                                      child:
+                                    decoration: BoxDecoration(
+                                        color: Colors.deepPurple,
+                                        shape: BoxShape.rectangle,
+                                        border: Border.all(
+                                            color: Colors.white, width: 2),
+                                        borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(10),
+                                            bottomRight: Radius.circular(10),
+                                            topRight: Radius.circular(10),
+                                            topLeft: Radius.circular(10))),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    width: 200,
+                                    child:
                                     Text(
-                                        "Players - " +
-                                            (widget.teams[index]
-                                                .data["playersCount"] ?? "0"),
+                                        widget.teams[index].data['coachName'] ??
+                                            'Coach',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                             fontFamily: 'Poppins',
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
                                             color: Colors.white)),),
-                                    SizedBox(
-                                      width: 20,
-                                    ),
+                                  Row(
+                                    children: <Widget>[
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Container(
+                                        width: 200,
+                                        child:
+                                        Text(
+                                            'Players - ' +
+                                                (widget.teams[index]
+                                                    .data['playersCount'] ?? '0'),
+                                            style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                                color: Colors.white)),),
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
 
-                                  ],
-                                ),
-                                Row(children: <Widget>[
-                                  FlatButton(
-                                  child: Container(
-                                    margin: EdgeInsets.only(right: 10),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.white),
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(4))),
-                                    child:
-                                    Container(
-                                      width: 90,
-                                      child:
-                                    Text(" See details ",
-                                        style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12,
-                                            color: Colors.white)),),
+                                    ],
                                   ),
-                                )],)
-                              ],
-                            )),
+                                  Row(children: <Widget>[
+                                    FlatButton(
+                                      child: Container(
+                                        margin: const EdgeInsets.only(right: 10),
+                                        decoration: BoxDecoration(
+                                            border: Border.all(color: Colors.white),
+                                            borderRadius:
+                                            const BorderRadius.all(Radius.circular(4))),
+                                        child:
+                                        Container(
+                                          width: 90,
+                                          child:
+                                          Text(' See details ',
+                                              style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12,
+                                                  color: Colors.white)),),
+                                      ),
+                                    )],)
+                                ],
+                              )),
 
-                          ],
-                        ),
-                      );
-                    }),
-              ),
-              margin: EdgeInsets.only(top: 20, left: 20, right: 20),
+                        ],
+                      ),
+                    );
+                  }),
+              margin: const EdgeInsets.only(top: 20, left: 20, right: 20),
             ),
             Container(
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10))
-              ,margin: EdgeInsets.fromLTRB(20, 40, 20, 10),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(4),color: Colors.orange)
+              ,margin: const EdgeInsets.fromLTRB(20, 40, 20, 10),
               child: 
-            RaisedGradientButton(
+            FlatButton(
               child: Text(
-                '+ Add Subleague',
+                'Add Subleague',
                 style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'Poppins',
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.normal,
                     fontSize: 14),
               ),
-              gradient: LinearGradient(colors: [
-                Themes.theme1["FirstGradientColor"],
-                Themes.theme1["SecondGradientColor"]
-              ]),
               onPressed: () {
               Navigator.push<Object>(context, MaterialPageRoute(builder: (BuildContext context){
                 return AddSubleague(widget.leagueName);

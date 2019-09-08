@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'colors.dart';
 import 'utilities.dart';
 
@@ -14,108 +15,128 @@ class AddSubleague extends StatefulWidget {
 }
 
 class AddSubleagueState extends State<AddSubleague> {
-  var formKey = GlobalKey<FormState>();
-  var newsController = TextEditingController(text: '');
+  GlobalKey formKey = GlobalKey<FormState>();
+  TextEditingController subLeagueController = TextEditingController(text: '');
 
+  bool isLoading = false;
+
+  Color buttonColor() {
+    if (subLeagueController.text.length >= 3){
+      return Colors.orange;
+    }
+    return Colors.orange[200];
+  }
+
+  void addSubleagueAction() {
+    if (subLeagueController.text.length >= 3){
+      setState(() {
+        isLoading = true;
+      });
+      Firestore.instance
+          .collection('Leagues')
+          .document(widget.leagueName)
+          .collection('Subleagues')
+          .document(subLeagueController.text)
+          .setData(<String,dynamic>{}).then((value) {
+            setState(() {
+              isLoading = false;
+            });
+        return Navigator.pop(context);
+      });
+    }
+    else {
+
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Add Subleague'),
+        backgroundColor: Colors.orange,
+      ),
       resizeToAvoidBottomPadding: false,
       backgroundColor: Themes.theme1['CardColor'],
-      body: Column(
+      body: ModalProgressHUD(inAsyncCall: isLoading, child: Column(
         children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(top: 40),
-            child: Text(
-              'Add Subleague',
-              style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 20,
-                  fontStyle: FontStyle.normal,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-          ),
           Container(
             child: Container(
               height: 400,
-              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 40),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(Utilities.cornerRadius),
-                    side: BorderSide(
-                        color: Themes.theme1['HighLightColor'], width: 2)),
-                color: Themes.theme1['CardColor'],
-                margin: EdgeInsets.only(top: 20, left: 20, right: 20),
-                child: Form(
-                  key: formKey,
-                  child: ListView(
-                    children: <Widget>[
-                      SizedBox(
-                        height: 40,
-                      ),
-                      Container(
-                        height: 60,
-                        child: TextFormField(
-                            style: CustomTextStyles.regularText,
-                            controller: newsController,
-                            onSaved: (value) {},
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
-                                filled: true,
-                                fillColor: Themes.theme1['TextFieldFillColor'],
-                                labelText: 'New Subleague',
-                                labelStyle: TextStyle(
-                                    color:
-                                        Themes.theme1['TextPlaceholderColor'],
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14),
-                                errorStyle: TextStyle(fontSize: 14)),
-                            autovalidate: false,
-                            validator: (String news) {
-                              if (news.trim().isEmpty) {
-                                return 'Subleague name cant be empty.';
-                              }
-                            }),
-                        margin: EdgeInsets.only(left: 40, right: 40),
-                      ),
-                      Container(
-                        height: 60,
-                      ),
-                      Container(
-                        height: 50,
-                        margin: EdgeInsets.only(top: 20, left: 40, right: 40),
-                        child: RaisedGradientButton(
-                            child: Text(
-                              'Add Subleague',
-                              style: CustomTextStyles.boldLargeText,
-                            ),
-                            gradient: LinearGradient(colors: [
-                              Themes.theme1['FirstGradientColor'],
-                              Themes.theme1['SecondGradientColor']
-                            ]),
-                            onPressed: () {
-                              Firestore.instance
-                                  .collection('Leagues')
-                                  .document(widget.leagueName)
-                                  .collection('Subleagues')
-                                  .document(newsController.text)
-                                  .setData(<String,dynamic>{}).then((value) {
-                                return Navigator.pop(context);
-                              });
-                            }),
-                      ),
-                    ],
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 40),
+              child: Form(
+                onChanged: (){
+                  setState(() {
+
+                  });
+                },
+                key: formKey,
+                child: ListView(
+                  children: <Widget>[
+                    const SizedBox(
+                      height: 40,
+                    ),
+                Container(
+                  margin: const EdgeInsets.only(left: 16, right: 16),
+                  child: Theme(
+                    child: TextFormField(
+                      controller: subLeagueController,
+                      autocorrect: false,
+                      onSaved: (String email) {
+
+                      },
+                      validator: (String value) {
+                        if (value.length >=3) {
+                          return null;
+                        }
+                        return '';
+                      },
+                      autovalidate: true,
+                      decoration: InputDecoration(
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.cyan),
+                          ),
+                          errorBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          hintStyle: TextStyle(
+                              fontFamily: 'Poppins',
+                              color: Themes.theme1['SubTextColor']),
+                          hintText: 'Subleague Name'),
+                      style: TextStyle(
+                          fontFamily: 'Poppins',
+                          color: Themes.theme1['TextColor']),
+                    ),
+                    data: ThemeData(primaryColor: Colors.orange,accentColor: Colors.cyan),
                   ),
                 ),
-              ),
+                    Container(
+                      height: 60,
+                    ),
+                Container(
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(4),color: buttonColor())
+                  ,margin: const EdgeInsets.fromLTRB(20, 40, 20, 10),
+                  child:
+                  FlatButton(
+                    child: Text(
+                      'Add Subleague',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14),
+                    ),
+                    onPressed: () {
+                      addSubleagueAction();
+                    },
+                  ),)
+                   ,
+                  ],
+                ),
+              )
             ),
           )
         ],
-      ),
+      )),
     );
   }
 }

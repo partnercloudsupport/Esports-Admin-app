@@ -31,6 +31,7 @@ dependencies:
   #  flutter_facebook_login: "2.0.1"
   google_sign_in: "4.0.4"
   #  local_auth: "0.5.2+4"
+  firebase_messaging: "^5.0.2"
   flutter_datetime_picker: "^1.2.1"
   firebase_crashlytics: "0.1.0"
   firebase_analytics: "4.0.2"
@@ -82,6 +83,9 @@ flutter:
     - images/splash.gif
     - images/crown.png
     - images/news.png
+    - images/emptyBox.png
+    - images/processing.png
+    - images/envelope.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

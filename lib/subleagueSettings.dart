@@ -34,6 +34,10 @@ class SubleagueSettingsState extends State<SubleagueSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('League Settings'),
+        backgroundColor: Colors.orange,
+      ),
       resizeToAvoidBottomPadding: false,
       backgroundColor: Themes.theme1["CardColor"],
       body: Container(

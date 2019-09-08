@@ -2,12 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:flutter/material.dart';
-import 'RolesEnum.dart';
+import 'package:flutter/cupertino.dart';
 
+import 'RolesEnum.dart';
 import 'adminDashboard.dart';
 import 'coachDashboard.dart';
 import 'colors.dart';
+import 'launchPage.dart';
 import 'newsBoard.dart';
+import 'presidentDashboard.dart';
 import 'utilities.dart';
 
 class Dashboard extends StatefulWidget {
@@ -21,10 +24,52 @@ class Dashboard extends StatefulWidget {
 
 class DashboardState extends State<Dashboard>
     with SingleTickerProviderStateMixin {
-
   Role role;
   AnimationController animationController;
   bool isLoading = false;
+
+  int numberOfTabs = 1;
+  List<String> tabStrings = <String>[''];
+  List<Widget> tabViews = <Widget>[const Text('')];
+
+  void updateTabs() {
+    if (role == Role.president) {
+      numberOfTabs = 4;
+      tabStrings = <String>['News', 'Admin', 'Coach', 'President'];
+      tabViews = <Widget>[
+        NewsBoard(widget.leagueName),
+        AdminDashboard(widget.leagueName, role.toString()),
+        Text('ds'),
+        PresidentDashboard(widget.leagueName, role.toString()),
+
+
+      ];
+    } else if (role == Role.adminAndCoach) {
+      numberOfTabs = 3;
+      tabStrings = <String>['News', 'Admin', 'Coach'];
+      tabViews = <Widget>[
+        NewsBoard(widget.leagueName),
+        AdminDashboard(widget.leagueName, role.toString()),
+        Text('ds')
+      ];
+    } else if (role == Role.admin) {
+      numberOfTabs = 2;
+      tabStrings = <String>['News', 'Admin'];
+      tabViews = <Widget>[
+        NewsBoard(widget.leagueName),
+        AdminDashboard(widget.leagueName, role.toString()),
+      ];
+    } else if (role == Role.coach) {
+      numberOfTabs = 2;
+      tabStrings = <String>['News', 'Coach'];
+      tabViews = <Widget>[
+        NewsBoard(widget.leagueName),
+        AdminDashboard(widget.leagueName, role.toString()),
+      ];
+    } else {
+      print('ddd');
+    }
+  }
 
   @override
   void initState() {
@@ -34,10 +79,11 @@ class DashboardState extends State<Dashboard>
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 100));
     animationController.repeat(min: 0, max: 0.5);
-    checkRole().whenComplete((){
-    setState(() {
-      isLoading = false;
-    });
+    checkRole().whenComplete(() {
+      setState(() {
+        updateTabs();
+        isLoading = false;
+      });
     });
     super.initState();
   }
@@ -50,8 +96,10 @@ class DashboardState extends State<Dashboard>
         .collection('Leagues')
         .document(widget.leagueName)
         .get();
-    if (data.data['President'] != null && data.data['President']['id'] == user.email.replaceAll('.', '-')) {
+    if (data.data['President'] != null &&
+        data.data['President']['id'] == user.email.replaceAll('.', '-')) {
       role = Role.president;
+      return;
     }
     final QuerySnapshot admins = await Firestore.instance
         .collection('Leagues')
@@ -75,6 +123,8 @@ class DashboardState extends State<Dashboard>
         break;
       }
     }
+    role = Role.unknown;
+
     if (isAdmin && isCoach) {
       role = Role.adminAndCoach;
     }
@@ -84,7 +134,6 @@ class DashboardState extends State<Dashboard>
     if (isCoach) {
       role = Role.coach;
     }
-    role = Role.unknown;
   }
 
   @override
@@ -93,146 +142,46 @@ class DashboardState extends State<Dashboard>
     super.dispose();
   }
 
-  Widget adminHalf(String role) {
-    return FlatButton(
-      onPressed: () {
-        Navigator.push<Object>(context,
-            MaterialPageRoute<AdminDashboard>(builder: (BuildContext context) {
-          return AdminDashboard(widget.leagueName, role);
-        }));
-      },
-      child: Container(
-        margin: const EdgeInsets.only(left: 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Themes.theme1['PrimaryColor'],
-        ),
-        constraints: BoxConstraints(
-            minHeight: 93,
-            maxHeight: 93,
-            minWidth: MediaQuery.of(context).size.width * 0.5 - 40),
-        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-          Container(
-              margin: const EdgeInsets.only(top: 20, left: 20),
-              child: Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.verified_user,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text('Admin',
-                      style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          color: Colors.white))
-                ],
-              )),
-          ClipRRect(
-            child: Container(
-                width: 70,
-                child: Icon(
-                  Icons.verified_user,
-                  size: 130,
-                  color: Themes.theme1['FirstGradientColor'],
-                )),
-            borderRadius: const BorderRadius.all(Radius.circular(1)),
-          )
-        ]),
-      ),
-    );
-  }
-
-  Widget coachHalf(String role) {
-    return FlatButton(
-      onPressed: () {
-        Navigator.push<Object>(context,
-            MaterialPageRoute<CoachDashboard>(builder: (BuildContext context) {
-          return CoachDashboard(widget.leagueName, role);
-        }));
-      },
-      child: Container(
-        margin: const EdgeInsets.only(left: 8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          color: Themes.theme1['PrimaryColor'],
-        ),
-        constraints: BoxConstraints(
-            minHeight: 93,
-            maxHeight: 93,
-            minWidth: MediaQuery.of(context).size.width * 0.5 - 40),
-        child: Row(mainAxisAlignment: MainAxisAlignment.end, children: <Widget>[
-          Container(
-              margin: const EdgeInsets.only(top: 20, left: 20),
-              child: Column(
-                children: <Widget>[
-                  Icon(
-                    Icons.supervised_user_circle,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text('Coach',
-                      style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          color: Colors.white))
-                ],
-              )),
-          ClipRRect(
-            child: Container(
-                width: 70,
-                child: Icon(
-                  Icons.supervised_user_circle,
-                  size: 130,
-                  color: Themes.theme1['FirstGradientColor'],
-                )),
-            borderRadius: const BorderRadius.all(Radius.circular(1)),
-          )
-        ]),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-
     return DefaultTabController(
-      length: 3,
+      length: numberOfTabs,
       child: Scaffold(
-        appBar: AppBar(
-          bottom: TabBar(tabs: <Widget>[
-            Tab(
-              child: const Text('News Board'),
-            ),
-            Tab(child: const Text('Admin')),
-            Tab(child: const Text('Coach')),
-          ]),
-          title: const Text('Dashboard'),
-          backgroundColor: Colors.orange,
-          actions: <Widget>[
-            FlatButton(
-              child: Container(
-                child: Image.asset('images/logout.png'),
-                height: 30,
-                width: 30,
-              ),
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-                Navigator.pop(context);
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
-            )
-          ],
-        ),
-        backgroundColor: Themes.theme1['CardColor'],
-        body: ModalProgressHUD(inAsyncCall: isLoading, child: TabBarView(children: [NewsBoard(widget.leagueName),AdminDashboard(widget.leagueName, role.toString()),Text('ds')]))
-      ),
+          appBar: AppBar(
+            bottom: TabBar(
+                tabs: tabStrings
+                    .map((String tabValue) => Container(
+                          child: Text(
+                            tabValue,
+                            style:
+                                TextStyle(fontSize: 12, fontFamily: 'Poppins'),
+                          ),
+                          height: 30,
+                        ))
+                    .toList()),
+            title: const Text('Dashboard'),
+            backgroundColor: Colors.orange,
+            actions: <Widget>[
+              FlatButton(
+                child: Container(
+                  child: Image.asset('images/logout.png'),
+                  height: 30,
+                  width: 30,
+                ),
+                onPressed: () {
+                  FirebaseAuth.instance.signOut();
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute<LaunchPage>(
+                          builder: (BuildContext context) {
+                    return LaunchPage();
+                  }));
+                },
+              )
+            ],
+          ),
+          backgroundColor: Themes.theme1['CardColor'],
+          body: ModalProgressHUD(
+              inAsyncCall: isLoading, child: TabBarView(children: tabViews))),
     );
   }
 }

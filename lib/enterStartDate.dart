@@ -131,6 +131,16 @@ class EnterStartDateState extends State<EnterStartDate> {
         .collection('Admins')
         .document(email.replaceAll('.', '-'))
         .setData(<String, dynamic>{});
+
+    // Store schedules.
+    for (var each in this.finalSchedule.entries) {
+      await Firestore.instance
+          .collection('Leagues')
+          .document(leagueName)
+          .collection('Schedule')
+          .document(each.key)
+          .setData(<String, dynamic>{'schedule': each.value});
+    }
     // Store subleague
 
     // Store all teams in database
@@ -139,19 +149,17 @@ class EnterStartDateState extends State<EnterStartDate> {
           .collection('Leagues')
           .document(leagueName)
           .collection('Subleagues')
-          .document(subleagueName)
+          .document(widget.subleagueName)
+          .setData(<String, dynamic>{});
+
+      await Firestore.instance
+          .collection('Leagues')
+          .document(leagueName)
+          .collection('Subleagues')
+          .document(widget.subleagueName)
           .collection('Teams')
           .document(team)
           .setData(<String, dynamic>{});
-    }
-    // Store schedules.
-    for (var each in this.finalSchedule.entries) {
-      await Firestore.instance
-          .collection('Leagues')
-          .document(this.leagueName)
-          .collection('Schedule')
-          .document(each.key)
-          .setData(<String, dynamic>{'schedule': each.value});
     }
   }
 
@@ -268,15 +276,17 @@ class EnterStartDateState extends State<EnterStartDate> {
                                 'President': {
                                   'id': user.email.replaceAll('.', '-'),
                                   'name': 'Anonymous',
-                                  'picture': ''
+                                  'picture': '',
+                                  'leagueID':leagueID
                                 }
                               });
-                              Navigator.push<Object>(
-                                  context,
+                              Navigator.of(context).popUntil((route) => route.isFirst);
+                              Navigator.pushReplacement(context,
                                   MaterialPageRoute<Dashboard>(
-                                      builder: (BuildContext context) =>
-                                          Dashboard(leagueName)));
-
+                                      builder: (BuildContext context) {
+                                        return Dashboard(
+                                            leagueName);
+                                      }));
                           });
                         }                      },
                       child: const Text(

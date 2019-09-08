@@ -5,6 +5,7 @@ import 'RolesEnum.dart';
 import 'coachDashboard.dart';
 import 'colors.dart';
 import 'leagueSettings.dart';
+import 'roleManagement.dart';
 import 'selectSubleague.dart';
 import 'subleagueSettings.dart';
 import 'utilities.dart';
@@ -58,7 +59,7 @@ class AdminDashboardState extends State<AdminDashboard> {
                                       left: 10, right: 10),
                                   child: Image.asset('images/dumbbell.png')),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(1)),
+                                  const BorderRadius.all(Radius.circular(1)),
                             ),
                             Text('League Update',
                                 softWrap: true,
@@ -77,7 +78,7 @@ class AdminDashboardState extends State<AdminDashboard> {
                         top: 10, bottom: 10, left: 10, right: 10),
                     onPressed: () {
                       Navigator.push<Object>(context,
-                          MaterialPageRoute(builder: (BuildContext context) {
+                          MaterialPageRoute<LeagueSettings>(builder: (BuildContext context) {
                         return LeagueSettings(widget.leagueName);
                       }));
                     },
@@ -101,7 +102,7 @@ class AdminDashboardState extends State<AdminDashboard> {
                                     color: Colors.white,
                                   )),
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(1)),
+                                  const BorderRadius.all(Radius.circular(1)),
                             ),
                             Text('League Settings',
                                 softWrap: true,
@@ -121,7 +122,7 @@ class AdminDashboardState extends State<AdminDashboard> {
                     onPressed: () {
                       Navigator.push<Object>(context,
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return SelectSubleague(widget.leagueName);
+                        return RoleManagement(widget.leagueName);
                       }));
                     },
                     child: Container(
@@ -142,7 +143,7 @@ class AdminDashboardState extends State<AdminDashboard> {
                                     child:
                                         Image.asset('images/permission.png')),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(1)),
+                                    const BorderRadius.all(Radius.circular(1)),
                               ),
                               Text('Role Management',
                                   softWrap: true,
@@ -153,46 +154,6 @@ class AdminDashboardState extends State<AdminDashboard> {
                                       color: Colors.white)),
                             ]),
                       ),
-                    ),
-                  ),
-                ),
-                GridTile(
-                  child: FlatButton(
-                    padding: const EdgeInsets.only(
-                        top: 10, bottom: 10, left: 10, right: 10),
-                    onPressed: () {
-                      Navigator.push<Object>(context,
-                          MaterialPageRoute(builder: (BuildContext context) {
-                        return SubleagueSettings(widget.leagueName);
-                      }));
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 8),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Themes.theme1['PrimaryColor'],
-                      ),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            ClipRRect(
-                              child: Container(height: 100,
-                                  width: 40,
-                                  margin: const EdgeInsets.only(
-                                      left: 10, right: 10),
-                                  child: Image.asset(
-                                      'images/subleagueSettings.png')),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(1)),
-                            ),
-                            Text('Subleague Settings',
-                                softWrap: true,
-                                style: TextStyle(
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                    color: Colors.white)),
-                          ]),
                     ),
                   ),
                 ),
