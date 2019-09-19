@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'RolesEnum.dart';
 
+import 'addNewTeam.dart';
 import 'coachDashboard.dart';
 import 'colors.dart';
 import 'leagueSettings.dart';
@@ -121,7 +122,7 @@ class AdminDashboardState extends State<AdminDashboard> {
                         top: 10, bottom: 10, left: 10, right: 10),
                     onPressed: () {
                       Navigator.push<Object>(context,
-                          MaterialPageRoute(builder: (BuildContext context) {
+                          MaterialPageRoute<RoleManagement>(builder: (BuildContext context) {
                         return RoleManagement(widget.leagueName);
                       }));
                     },
@@ -146,6 +147,48 @@ class AdminDashboardState extends State<AdminDashboard> {
                                     const BorderRadius.all(Radius.circular(1)),
                               ),
                               Text('Role Management',
+                                  softWrap: true,
+                                  style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.white)),
+                            ]),
+                      ),
+                    ),
+                  ),
+                ),
+                GridTile(
+                  child: FlatButton(
+                    padding: const EdgeInsets.only(
+                        top: 10, bottom: 10, left: 10, right: 10),
+                    onPressed: () {
+                      Navigator.push<Object>(context,
+                          MaterialPageRoute<RoleManagement>(builder: (BuildContext context) {
+                            return AddTeam(widget.leagueName);
+                          }));
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Themes.theme1['PrimaryColor'],
+                      ),
+                      child: Container(
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              ClipRRect(
+                                child: Container(height: 100,
+                                    width: 40,
+                                    margin: const EdgeInsets.only(
+                                        left: 10, right: 10),
+                                    child:
+                                    Image.asset('images/team.png')),
+                                borderRadius:
+                                const BorderRadius.all(Radius.circular(1)),
+                              ),
+                              Text('Add Team',
                                   softWrap: true,
                                   style: TextStyle(
                                       fontFamily: 'Poppins',

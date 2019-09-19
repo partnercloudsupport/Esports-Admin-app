@@ -167,7 +167,7 @@ class NewUsersChecksState extends State<NewUsersChecks> {
                                     sendNotification(
                                         widget.user.replaceAll('.', '-'),
                                         'Request Status updated',
-                                        'President has given you access. Kindly try again');
+                                        'President has given you access.');
                                     Navigator.pop(context);
                                   },
                                 ),
@@ -215,7 +215,7 @@ class NewUsersChecksState extends State<NewUsersChecks> {
                                     sendNotification(
                                         widget.user.replaceAll('.', '-'),
                                         'Request Status updated',
-                                        'President has given you access. Kindly try again');
+                                        'President has given you access.');
                                     Navigator.pop(context);
                                   },
                                 ),
@@ -283,7 +283,7 @@ class NewUsersChecksState extends State<NewUsersChecks> {
                                     sendNotification(
                                         widget.user.replaceAll('.', '-'),
                                         'Request Status updated',
-                                        'President has given you access. Kindly try again');
+                                        'President has given you access.');
                                     Navigator.pop(context);
                                   },
                                 ),
@@ -331,7 +331,7 @@ class NewUsersChecksState extends State<NewUsersChecks> {
                                     sendNotification(
                                         widget.user.replaceAll('.', '-'),
                                         'Request Status updated',
-                                        'President has given you access. Kindly try again');
+                                        'President has given you access.');
                                     Navigator.pop(context);
                                   },
                                 ),

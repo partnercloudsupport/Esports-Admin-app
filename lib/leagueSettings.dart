@@ -20,7 +20,7 @@ class LeagueSettings extends StatefulWidget {
 }
 
 class LeagueSettingsState extends State<LeagueSettings> {
-  String leaguePhoto = '';
+  String leaguePhoto = 'https://firebasestorage.googleapis.com/v0/b/league2-33117.appspot.com/o/logo.png?alt=media&token=8a8b3791-7676-485a-a800-959d4a1b0325';
   TextEditingController nameController = TextEditingController(text: '');
   TextEditingController idController = TextEditingController(text: '');
   String leagueID = '';
@@ -32,8 +32,17 @@ class LeagueSettingsState extends State<LeagueSettings> {
         .get();
     setState(() {
       leaguePhoto = temp.data['leaguePhoto'] ?? '';
-      leagueID = temp.data['leagueID'] ?? '';
+      leagueID = temp.data['President']['leagueID'] ?? '';
     });
+  }
+
+  Widget leadingWidget(bool president) {
+    if (president) {
+      return Container(
+        child: Image.asset('images/crown.png'),
+      );
+    }
+    return const Text('');
   }
 
   Color buttonColor() {
@@ -68,7 +77,7 @@ class LeagueSettingsState extends State<LeagueSettings> {
                 context: context,
                 builder: (BuildContext context) {
                   return CupertinoAlertDialog(
-                    title: const Text('League iD already exist'),
+                    title: const Text('League ID already exist'),
                     actions: <Widget>[
                       CupertinoDialogAction(
                         child: const Text('OK'),
@@ -170,14 +179,21 @@ class LeagueSettingsState extends State<LeagueSettings> {
                         width: 120,
                         child: FadeInImage.assetNetwork(
                             placeholder: 'images/medal.png',
-                            image: leaguePhoto),
+                            image: leaguePhoto, fit: BoxFit.fill,),
                         color: Colors.deepPurple,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(120)),
+                      borderRadius: const BorderRadius.all(Radius.circular(120)),
                     ),
                   ),
                   onPressed: () {
-                    chooseLeaguePic();
+                    setState(() {
+                      isLoading = true;
+                    });
+                    chooseLeaguePic().whenComplete((){
+                      setState(() {
+                        isLoading = false;
+                      });
+                    });
                   },
                 ),
                 Spacer(),

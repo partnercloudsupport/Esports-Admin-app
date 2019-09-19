@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'colors.dart';
 import 'mainPage.dart';
 import 'signUp.dart';
+import 'selectDesiredLegue.dart';
 
 class LaunchPage extends StatefulWidget {
   @override
@@ -20,6 +22,18 @@ class LaunchState extends State<LaunchPage> {
   Future<void> openTermsAndConditions() async {
     const String url = 'https://flutter.dev';
     launch(url);
+  }
+  bool showLoader = false;
+  @override
+  void initState() {
+      FirebaseAuth.instance.currentUser().then((FirebaseUser user){
+        if(user != null){
+          Navigator.push<Object>(context, MaterialPageRoute<SelectDesiredLeague>(builder: (BuildContext context){
+            return SelectDesiredLeague();
+          }));
+        }
+      });
+    super.initState();
   }
 
 

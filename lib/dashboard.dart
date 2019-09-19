@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -11,6 +12,7 @@ import 'colors.dart';
 import 'launchPage.dart';
 import 'newsBoard.dart';
 import 'presidentDashboard.dart';
+import 'profilePage.dart';
 import 'utilities.dart';
 
 class Dashboard extends StatefulWidget {
@@ -41,8 +43,6 @@ class DashboardState extends State<Dashboard>
         AdminDashboard(widget.leagueName, role.toString()),
         Text('ds'),
         PresidentDashboard(widget.leagueName, role.toString()),
-
-
       ];
     } else if (role == Role.adminAndCoach) {
       numberOfTabs = 3;
@@ -144,44 +144,117 @@ class DashboardState extends State<Dashboard>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: numberOfTabs,
-      child: Scaffold(
-          appBar: AppBar(
-            bottom: TabBar(
-                tabs: tabStrings
-                    .map((String tabValue) => Container(
-                          child: Text(
-                            tabValue,
-                            style:
-                                TextStyle(fontSize: 12, fontFamily: 'Poppins'),
-                          ),
-                          height: 30,
-                        ))
-                    .toList()),
-            title: const Text('Dashboard'),
-            backgroundColor: Colors.orange,
-            actions: <Widget>[
-              FlatButton(
+    return ModalProgressHUD(
+      inAsyncCall: isLoading,
+      child: DefaultTabController(
+        length: numberOfTabs,
+        child: Scaffold(
+            appBar: AppBar(
+              bottom: TabBar(
+                  tabs: tabStrings
+                      .map((String tabValue) => Container(
+                            child: Text(
+                              tabValue,
+                              style: TextStyle(
+                                  fontSize: 12, fontFamily: 'Poppins'),
+                            ),
+                            height: 30,
+                          ))
+                      .toList()),
+              title: const Text('Dashboard'),
+              leading: FlatButton(
                 child: Container(
-                  child: Image.asset('images/logout.png'),
-                  height: 30,
-                  width: 30,
+                  child: Icon(
+                    Icons.supervised_user_circle,
+                    size: 40,
+                    color: Colors.white,
+                  ),
                 ),
                 onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute<LaunchPage>(
-                          builder: (BuildContext context) {
-                    return LaunchPage();
+                  Navigator.push(context, MaterialPageRoute<ProfilePage>(
+                      builder: (BuildContext context) {
+                    return ProfilePage();
                   }));
                 },
-              )
-            ],
-          ),
-          backgroundColor: Themes.theme1['CardColor'],
-          body: ModalProgressHUD(
-              inAsyncCall: isLoading, child: TabBarView(children: tabViews))),
+              ),
+              backgroundColor: Colors.orange,
+              actions: <Widget>[
+                FlatButton(
+                  child: Container(
+                    child: Image.asset('images/logout.png'),
+                    height: 30,
+                    width: 30,
+                  ),
+                  onPressed: () {
+                    if (Platform.isIOS) {
+                      showCupertinoDialog<CupertinoAlertDialog>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CupertinoAlertDialog(
+                              title: const Text('Do you want to logout?'),
+                              actions: <Widget>[
+                                CupertinoDialogAction(
+                                  child: const Text('OK'),
+                                  isDefaultAction: false,
+                                  onPressed: () {
+                                    Navigator.pop(context);
+
+                                    FirebaseAuth.instance.signOut();
+                                    Navigator.pushReplacement(context,
+                                        MaterialPageRoute<LaunchPage>(
+                                            builder: (BuildContext context) {
+                                      return LaunchPage();
+                                    }));
+                                  },
+                                ),
+                                CupertinoDialogAction(
+                                  child: const Text('Cancel'),
+                                  isDefaultAction: true,
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                )
+                              ],
+                            );
+                          });
+                    } else {
+                      showDialog<AlertDialog>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Do you want to logout?'),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: const Text('OK'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+
+                                    FirebaseAuth.instance.signOut();
+                                    Navigator.pushReplacement(context,
+                                        MaterialPageRoute<LaunchPage>(
+                                            builder: (BuildContext context) {
+                                      return LaunchPage();
+                                    }));
+                                  },
+                                ),
+                                FlatButton(
+                                  child: const Text('Cancel'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                )
+                              ],
+                            );
+                          });
+                    }
+                  },
+                ),
+              ],
+            ),
+            backgroundColor: Themes.theme1['CardColor'],
+            body: ModalProgressHUD(
+                inAsyncCall: isLoading, child: TabBarView(children: tabViews))),
+      ),
     );
   }
 }

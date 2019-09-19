@@ -44,7 +44,7 @@ class SelectDesiredLeagueState extends State<SelectDesiredLeague> {
       await Firestore.instance
           .collection('Users')
           .document(uid)
-          .setData(<String, dynamic>{
+          .updateData(<String, dynamic>{
         'token': fcmToken,
         'createdAt': FieldValue.serverTimestamp(), // optional
         'platform': Platform.operatingSystem // optional
@@ -400,13 +400,14 @@ class SelectDesiredLeagueState extends State<SelectDesiredLeague> {
                                       'true'),
                                   leading: ClipRRect(
                                     child: Container(
-                                      child: FadeInImage.assetNetwork(
+                                      height: 50,width: 50,
+                                      child: FadeInImage.assetNetwork(fit: BoxFit.fill,
                                           placeholder: 'images/logo.png',
                                           image: leagues
                                                   .leagues[index].leaguePhoto ??
                                               'https://firebasestorage.googleapis.com/v0/b/league2-33117.appspot.com/o/logo.png?alt=media&token=8a8b3791-7676-485a-a800-959d4a1b0325'),
                                     ),
-                                    borderRadius: BorderRadius.circular(100),
+                                    borderRadius: BorderRadius.circular(50),
                                   ),
                                   subtitle: Container(
                                     child: Text(

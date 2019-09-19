@@ -124,9 +124,11 @@ class UpdateRoleState extends State<UpdateRole> {
   @override
   void initState() {
     checkRole().whenComplete((){
-      setState(() {
-        isLoading = false;
-      });
+      if(mounted){
+        setState(() {
+          isLoading = false;
+        });
+      }
     });
     super.initState();
   }

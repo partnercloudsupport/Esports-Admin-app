@@ -3,14 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter/material.dart';
-
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'addLeagueNews.dart';
 import 'addTeamNews.dart';
 import 'colors.dart';
 import 'editLeagueNews.dart';
 import 'utilities.dart';
 
-class NewsBoard extends StatefulWidget{
+class NewsBoard extends StatefulWidget {
   const NewsBoard(this.leagueName);
   final String leagueName;
   @override
@@ -19,18 +19,53 @@ class NewsBoard extends StatefulWidget{
   }
 }
 
-class NewsBoardState extends State<NewsBoard>{
+class NewsBoardState extends State<NewsBoard> {
   List<String> boardName = <String>['League News', 'Team News'];
+  bool isLoading = false;
   int currentPage = 0;
   PageController controller = PageController();
   List<dynamic> leagueNews = <dynamic>[];
   List<dynamic> teamNews = <dynamic>[];
   final SlidableController slidableController = SlidableController();
   String changedNews = '';
+  Map<String, dynamic> leagueData = <String, dynamic>{};
+  String leagueID = '';
+  String leagueImage =
+      'https://firebasestorage.googleapis.com/v0/b/league2-33117.appspot.com/o/logo.png?alt=media&token=8a8b3791-7676-485a-a800-959d4a1b0325';
+
+  @override
+  void initState() {
+    setState(() {
+      isLoading = true;
+    });
+    getLayoutData().whenComplete(() {
+      if(mounted){
+        setState(() {
+          isLoading = false;
+        });
+      }
+    });
+    super.initState();
+  }
+
+  Future<void> getLayoutData() async {
+    final DocumentSnapshot data = await Firestore.instance
+        .collection('Leagues')
+        .document(widget.leagueName)
+        .get();
+    leagueData = data.data;
+    if (leagueData['leaguePhoto'].toString().trim().isNotEmpty) {
+      leagueImage = leagueData['leaguePhoto'].toString().trim();
+    }
+
+    if (leagueData['President']['leagueID'].toString().trim().isNotEmpty) {
+      leagueID = leagueData['President']['leagueID'].toString().trim();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       color: Themes.theme1['CardColor'],
       child: ListView(
         children: <Widget>[
@@ -50,6 +85,33 @@ class NewsBoardState extends State<NewsBoard>{
               ),
               Spacer()
             ],
+          ),
+          Center(child:
+          Container(
+              width: 60,
+              height: 60,
+              child: ClipRRect(
+                child: Container(
+                  child: Image.network(leagueImage,fit: BoxFit.fill,),
+                ),
+                borderRadius: const BorderRadius.all(Radius.circular(60)),
+              )),),
+          Row(
+            children: <Widget>[
+              Spacer(),
+              Text(
+                leagueID,
+                style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.normal,
+                    fontSize: 18,
+                    color: Colors.white),
+              ),
+              Spacer()
+            ],
+          ),
+          const SizedBox(
+            height: 10,
           ),
           Container(
             height: 40,
@@ -115,35 +177,20 @@ class NewsBoardState extends State<NewsBoard>{
                               .snapshots(),
                           builder: (BuildContext context, snapshot) {
                             if (snapshot.connectionState ==
-                                ConnectionState.done ||
+                                    ConnectionState.done ||
                                 snapshot.connectionState ==
                                     ConnectionState.active) {
                               if (!snapshot.hasData) {
-                                return Column(children: <Widget>[
-                                  const SizedBox(height: 20,),
-                                  Container(child:Image.asset('images/news.png'),height: 150,width: 150,),
-                                  Text(
-                                    'No News',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.normal),
-                                    textAlign: TextAlign.center,
-                                  )
-                                ],);
-                              } else {
-                                if (snapshot.data.documents.length == 0) {
-                                  leagueNews = <dynamic>[];
-                                } else {
-                                  leagueNews = snapshot.data.documents.first
-                                      .data['News'] ??
-                                      <dynamic>[];
-                                }
-                                if (leagueNews.isEmpty) {
-                                  return Column(children: <Widget>[
-                                    const SizedBox(height: 20,),
-                                    Container(child:Image.asset('images/news.png'),height: 150,width: 150,),
+                                return Column(
+                                  children: <Widget>[
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    Container(
+                                      child: Image.asset('images/news.png'),
+                                      height: 150,
+                                      width: 150,
+                                    ),
                                     Text(
                                       'No News',
                                       style: TextStyle(
@@ -153,67 +200,90 @@ class NewsBoardState extends State<NewsBoard>{
                                           fontWeight: FontWeight.normal),
                                       textAlign: TextAlign.center,
                                     )
-                                  ],);
+                                  ],
+                                );
+                              } else {
+                                if (snapshot.data.documents.length == 0) {
+                                  leagueNews = <dynamic>[];
+                                } else {
+                                  leagueNews = snapshot
+                                          .data.documents.first.data['News'] ??
+                                      <dynamic>[];
+                                }
+                                if (leagueNews.isEmpty) {
+                                  return Column(
+                                    children: <Widget>[
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Container(
+                                        child: Image.asset('images/news.png'),
+                                        height: 150,
+                                        width: 150,
+                                      ),
+                                      Text(
+                                        'No News',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.normal),
+                                        textAlign: TextAlign.center,
+                                      )
+                                    ],
+                                  );
                                 }
                                 return Container(
                                   color: Themes.theme1['PrimaryColor'],
                                   child: ListView.builder(
                                       itemCount: leagueNews.length,
-                                      itemBuilder: (BuildContext context,
-                                          int index) {
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
                                         return Column(
                                           children: <Widget>[
                                             Container(
                                               child: Slidable(
                                                   controller:
-                                                  slidableController,
+                                                      slidableController,
                                                   key: Key('$index'),
                                                   child: ListTile(
                                                     title: Text(
                                                       leagueNews[
-                                                          leagueNews
-                                                          .length -
-                                                          1 -
-                                                          index],
+                                                          leagueNews.length -
+                                                              1 -
+                                                              index],
                                                       style: TextStyle(
-                                                          color:
-                                                          Colors.white,
-                                                          fontFamily:
-                                                          'Poppins',
+                                                          color: Colors.white,
+                                                          fontFamily: 'Poppins',
                                                           fontWeight:
-                                                          FontWeight
-                                                              .normal,
+                                                              FontWeight.normal,
                                                           fontSize: 16),
                                                     ),
 //                                        leading: FadeInFadeOutIcons(Icons.blur_circular, Icons.blur_circular, Duration(milliseconds: 100)),
                                                   ),
                                                   actionPane:
-                                                  const SlidableDrawerActionPane(),
-                                                  secondaryActions: <
-                                                      Widget>[
+                                                      const SlidableDrawerActionPane(),
+                                                  secondaryActions: <Widget>[
                                                     IconSlideAction(
                                                       color: Themes.theme1[
-                                                      'TextPlaceholderColor'],
+                                                          'TextPlaceholderColor'],
                                                       icon: Icons.edit,
                                                       onTap: () {
                                                         changedNews =
-                                                        leagueNews[
-                                                        index];
-                                                        Navigator.push<
-                                                            Object>(
+                                                            leagueNews[index];
+                                                        Navigator.push<Object>(
                                                             context,
                                                             MaterialPageRoute<
-                                                                EditLeagueNews>(
+                                                                    EditLeagueNews>(
                                                                 builder:
                                                                     (BuildContext
-                                                                context) {
-                                                                  return EditLeagueNews(
-                                                                      widget
-                                                                          .leagueName,
-                                                                      leagueNews,
-                                                                      changedNews,
-                                                                      index);
-                                                                }));
+                                                                        context) {
+                                                          return EditLeagueNews(
+                                                              widget.leagueName,
+                                                              leagueNews,
+                                                              changedNews,
+                                                              index);
+                                                        }));
                                                       },
                                                     )
                                                   ]),
@@ -255,14 +325,13 @@ class NewsBoardState extends State<NewsBoard>{
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontFamily: 'Poppins',
-                                                fontWeight:
-                                                FontWeight.normal,
+                                                fontWeight: FontWeight.normal,
                                                 fontSize: 16),
                                           ),
 //                                        leading: FadeInFadeOutIcons(Icons.blur_circular, Icons.blur_circular, Duration(milliseconds: 100)),
                                         ),
                                         actionPane:
-                                        const SlidableDrawerActionPane(),
+                                            const SlidableDrawerActionPane(),
                                         secondaryActions: <Widget>[
                                           IconSlideAction(
                                             color: Colors.black,
@@ -275,7 +344,7 @@ class NewsBoardState extends State<NewsBoard>{
                                     child: Divider(
                                       color: Colors.white,
                                     ),
-                                    margin:const EdgeInsets.only(
+                                    margin: const EdgeInsets.only(
                                         left: 20, right: 20),
                                   )
                                 ],
@@ -303,8 +372,7 @@ class NewsBoardState extends State<NewsBoard>{
           ),
           Container(
             decoration: BoxDecoration(
-                borderRadius:
-                BorderRadius.circular(8),color: Colors.orange),
+                borderRadius: BorderRadius.circular(8), color: Colors.orange),
             margin: const EdgeInsets.only(left: 40, right: 40, top: 20),
             child: FlatButton(
               child: Text(
@@ -320,8 +388,8 @@ class NewsBoardState extends State<NewsBoard>{
                   Navigator.push(
                       context,
                       MaterialPageRoute<AddLeagueNews>(
-                          builder: (BuildContext context) => AddLeagueNews(
-                              widget.leagueName, leagueNews)));
+                          builder: (BuildContext context) =>
+                              AddLeagueNews(widget.leagueName, leagueNews)));
                 } else {
                   Navigator.push(
                       context,
