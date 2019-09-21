@@ -27,6 +27,10 @@ class LeagueInfoPageState extends State<LeagueInfoPage> {
       FirebaseUser user = await FirebaseAuth.instance.currentUser();
       await Firestore.instance.collection('Leagues').document(widget.leagueName).collection('Admins').document(user.email.replaceAll('.', '-')).delete();
       await Firestore.instance.collection('Leagues').document(widget.leagueName).collection('Coaches').document(user.email.replaceAll('.', '-')).delete();
+      DocumentSnapshot leagueData = await Firestore.instance.collection('Leagues').document(widget.leagueName).get();
+      if(leagueData.data['President']['id'] == user.email.replaceAll('.', '-')){
+        await Firestore.instance.collection('Leagues').document(widget.leagueName).updateData(<String,dynamic>{'President':<String,dynamic>{}});
+      }
       await FirebaseAuth.instance.signOut();
       setState(() {
         isLoading = false;

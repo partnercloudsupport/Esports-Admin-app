@@ -1,5 +1,9 @@
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'colors.dart';
 import 'utilities.dart';
@@ -18,9 +22,18 @@ class EditLeagueNews extends StatefulWidget {
 }
 
 class EditLeagueNewsState extends State<EditLeagueNews> {
+
+  Future<http.Response> sendNotification(
+      String email, String title, String content) async {
+    final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    final String email = user.email.replaceAll('.', '-');
+    return http.Client().post(
+        'https://us-central1-league2-33117.cloudfunctions.net/genericNotification?email=$email&title=$title&content=$content');
+  }
   var formKey = GlobalKey<FormState>();
-  var newsController = TextEditingController(text: '');
+  TextEditingController newsController = TextEditingController(text: '');
   bool isLoading = false;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,11 +124,55 @@ class EditLeagueNewsState extends State<EditLeagueNews> {
                                       .document('News')
                                       .setData(<String, dynamic>{
                                     'News': temp
-                                  }).then((vlaue) {
+                                  }).then((vlaue) async {
+                                    
+                                    QuerySnapshot admins = await Firestore.instance.collection('Leagues').document(widget.leagueName).collection('Admins').getDocuments();
+                                    FirebaseUser currentUser = await FirebaseAuth.instance.currentUser();
+                                    for(DocumentSnapshot admin in admins.documents){
+                                      if (currentUser.email.replaceAll('.', '-') != admin.documentID){
+                                        sendNotification(admin.documentID, 'News Updated', 'News of ' + widget.leagueName + 'is updated.');
+                                      }
+                                    }
                                     setState(() {
                                       isLoading = false;
                                     });
-                                    Navigator.pop(context);
+                                    if (Platform.isIOS) {
+                                      showCupertinoDialog<CupertinoAlertDialog>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return CupertinoAlertDialog(
+                                              title: const Text('Admins are notified about change'),
+                                              actions: <Widget>[
+                                                CupertinoDialogAction(
+                                                  child: const Text('OK'),
+                                                  isDefaultAction: true,
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          });
+                                    } else {
+                                      showDialog<AlertDialog>(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Text('Admins are notified about change'),
+                                              actions: <Widget>[
+                                                FlatButton(
+                                                  child: const Text('OK'),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          });
+                                    }
                                   });
                                 }
                               }),

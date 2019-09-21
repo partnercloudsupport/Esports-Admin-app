@@ -155,13 +155,13 @@ class DashboardState extends State<Dashboard>
                       .map((String tabValue) => Container(
                             child: Text(
                               tabValue,
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontSize: 12, fontFamily: 'Poppins'),
                             ),
                             height: 30,
                           ))
                       .toList()),
-              title: const Text('Dashboard'),
+              title: const Text('Dashboard',style: TextStyle(color: Colors.white),),
               leading: FlatButton(
                 child: Container(
                   child: Icon(
